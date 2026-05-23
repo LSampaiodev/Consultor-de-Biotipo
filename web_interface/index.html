@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultor de Biotipo - Fabrispuma</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome para Ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Cabeçalho (Header) -->
+        <header class="app-header">
+            <div class="logo-container">
+                <span class="logo-text">FABRI<span class="logo-highlight">SPUMA</span></span>
+                <span class="logo-subtext">Consultor Digital de Biotipo</span>
+            </div>
+            <p class="subtitle">Escolha o colchão de espuma ideal com base nas recomendações oficiais do INER.</p>
+        </header>
+
+        <!-- Navegação por Abas (Tabs) -->
+        <nav class="tabs-nav">
+            <button class="tab-btn active" onclick="switchTab('individual')">
+                <i class="fa-solid fa-user"></i> Consulta Individual
+            </button>
+            <button class="tab-btn" onclick="switchTab('casal')">
+                <i class="fa-solid fa-user-group"></i> Consulta Casal
+            </button>
+            <button class="tab-btn" onclick="switchTab('infantil')">
+                <i class="fa-solid fa-child"></i> Consulta Infantil
+            </button>
+        </nav>
+
+        <!-- Conteúdo Principal -->
+        <main class="app-content">
+            <!-- Formulário Individual -->
+            <section id="tab-individual" class="tab-content active">
+                <div class="card form-card">
+                    <h2><i class="fa-solid fa-user text-primary"></i> Perfil do Cliente</h2>
+                    <form id="form-individual" onsubmit="calcularIndividual(event)">
+                        <div class="form-group">
+                            <label for="ind-nome">Nome Completo</label>
+                            <input type="text" id="ind-nome" placeholder="Ex: Joana D'Arc" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="ind-peso">Peso (kg)</label>
+                                <input type="number" id="ind-peso" step="0.1" min="10" max="250" placeholder="Ex: 65.5" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="ind-altura">Altura (metros)</label>
+                                <input type="number" id="ind-altura" step="0.01" min="0.5" max="2.5" placeholder="Ex: 1.68" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-submit">Calcular Recomendação</button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Formulário Casal -->
+            <section id="tab-casal" class="tab-content">
+                <div class="card form-card">
+                    <h2><i class="fa-solid fa-user-group text-primary"></i> Perfil do Casal</h2>
+                    <form id="form-casal" onsubmit="calcularCasal(event)">
+                        <div class="couple-grid">
+                            <!-- Conjuge 1 -->
+                            <div class="partner-form">
+                                <h3>1º Cônjuge</h3>
+                                <div class="form-group">
+                                    <label for="c1-nome">Nome</label>
+                                    <input type="text" id="c1-nome" placeholder="Ex: Carlos" required>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="c1-peso">Peso (kg)</label>
+                                        <input type="number" id="c1-peso" step="0.1" min="10" max="250" placeholder="Ex: 75" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="c1-altura">Altura (m)</label>
+                                        <input type="number" id="c1-altura" step="0.01" min="0.5" max="2.5" placeholder="Ex: 1.78" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Conjuge 2 -->
+                            <div class="partner-form">
+                                <h3>2º Cônjuge</h3>
+                                <div class="form-group">
+                                    <label for="c2-nome">Nome</label>
+                                    <input type="text" id="c2-nome" placeholder="Ex: Roberto" required>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="c2-peso">Peso (kg)</label>
+                                        <input type="number" id="c2-peso" step="0.1" min="10" max="250" placeholder="Ex: 95" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="c2-altura">Altura (m)</label>
+                                        <input type="number" id="c2-altura" step="0.01" min="0.5" max="2.5" placeholder="Ex: 1.85" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-submit btn-couple">Calcular Recomendação Casal</button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Formulário Infantil -->
+            <section id="tab-infantil" class="tab-content">
+                <div class="card form-card">
+                    <h2><i class="fa-solid fa-child text-primary"></i> Recomendação Infantil</h2>
+                    <form id="form-infantil" onsubmit="calcularInfantil(event)">
+                        <div class="form-group">
+                            <label for="inf-nome">Nome da Criança</label>
+                            <input type="text" id="inf-nome" placeholder="Ex: Arthur" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="inf-idade">Idade (em anos - até 3 anos)</label>
+                            <input type="number" id="inf-idade" step="0.1" min="0.1" max="10" placeholder="Ex: 1.5" required>
+                        </div>
+                        <button type="submit" class="btn-submit">Calcular Recomendação Infantil</button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Painel de Resultados (Dinâmico) -->
+            <div id="result-container" class="card result-card hidden">
+                <div class="result-header">
+                    <span class="badge">Recomendação</span>
+                    <button class="btn-close" onclick="closeResult()"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="result-body">
+                    <div class="result-main">
+                        <span class="result-label">Densidade Recomendada</span>
+                        <h1 id="result-density">D33</h1>
+                        <p id="result-summary">Com base nos dados informados.</p>
+                    </div>
+                    <div class="result-details" id="result-details-content">
+                        <!-- Conteúdo dinâmico de detalhes do cálculo -->
+                    </div>
+                </div>
+                <!-- Painel de Dicas / Alertas do Vendedor -->
+                <div id="result-alert-panel" class="alert-panel hidden">
+                    <i class="fa-solid fa-lightbulb alert-icon"></i>
+                    <div class="alert-content">
+                        <h4 id="alert-title">Dica Fabrispuma</h4>
+                        <p id="alert-text">Dicas comerciais e de ergonomia.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Guia de Referência da Tabela INER -->
+            <section class="card ref-card">
+                <div class="ref-header" onclick="toggleTable()">
+                    <h3><i class="fa-solid fa-table text-primary"></i> Tabela de Biotipo Oficial do INER</h3>
+                    <i class="fa-solid fa-chevron-down toggle-icon" id="table-toggle-icon"></i>
+                </div>
+                <div class="ref-body collapsed" id="table-body">
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Peso (kg) \ Altura (m)</th>
+                                    <th>Até 1,50</th>
+                                    <th>1,51 a 1,60</th>
+                                    <th>1,61 a 1,70</th>
+                                    <th>1,71 a 1,80</th>
+                                    <th>1,81 a 1,90</th>
+                                    <th>Acima de 1,91</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Até 50</strong></td>
+                                    <td>D23</td>
+                                    <td>D23</td>
+                                    <td>D23</td>
+                                    <td>D20</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>51 a 60</strong></td>
+                                    <td>D26</td>
+                                    <td>D26</td>
+                                    <td>D26</td>
+                                    <td>D23</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>61 a 70</strong></td>
+                                    <td>D28</td>
+                                    <td>D28</td>
+                                    <td>D28</td>
+                                    <td>D28</td>
+                                    <td>D26</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>71 a 80</strong></td>
+                                    <td>-</td>
+                                    <td>D33</td>
+                                    <td>D33</td>
+                                    <td>D33</td>
+                                    <td>D28</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>81 a 90</strong></td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>D33</td>
+                                    <td>D33</td>
+                                    <td>D33</td>
+                                    <td>D28</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>91 a 100</strong></td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>D40</td>
+                                    <td>D40</td>
+                                    <td>D33</td>
+                                    <td>D33</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>101 a 120</strong></td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>D45</td>
+                                    <td>D40</td>
+                                    <td>D40</td>
+                                    <td>D40</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>121 a 150</strong></td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>D45</td>
+                                    <td>D45</td>
+                                    <td>D40</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="table-note">* O INER (Instituto Nacional de Estudos do Repouso) recomenda espuma D18 para recém-nascidos e crianças até 3 anos.</p>
+                </div>
+            </section>
+        </main>
+
+        <!-- Rodapé (Footer) -->
+        <footer class="app-footer">
+            <p>&copy; 2026 Fabrispuma Lojas de Colchões e Móveis. Todos os direitos reservados.</p>
+            <p class="academic-note">Protótipo comercial interativo desenvolvido em conformidade com as diretrizes do INER.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
